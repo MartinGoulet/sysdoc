@@ -5,4 +5,23 @@ services:
       context: ./Amf.Documentation.Developpement.API
       dockerfile: Dockerfile
     ports:
-      - "5000:80"
+      - "5001:80"
+    networks:
+      - app-network
+
+  app:
+    image: my-angular-project:latest
+    build: 
+      context: ./Amf.Angular
+      dockerfile: Dockerfile
+    ports:
+      - 3000:80
+    depends_on:
+     - "dev.api"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+  
