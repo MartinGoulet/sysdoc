@@ -8,7 +8,7 @@ namespace Amf.Documentation.Developpement.API.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ScaffoldColumn(false)]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string Nom { get; set; }

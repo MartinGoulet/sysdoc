@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Amf.Documentation.Developpement.API.Entities;
+using Amf.Documentation.Developpement.API.Infrastructure.Data;
+using Amf.Documentation.Developpement.API.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,6 +32,12 @@ namespace Amf.Documentation.Developpement.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => 
+            {
+                options.AddPolicy("AllowSpecificOrigin", builder => 
+                    builder.WithOrigins("http://localhost:*"));
+            });
+
             services.AddDbContext<DeveloppementContext>(opt => opt.UseInMemoryDatabase("DeveloppementDb"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -45,7 +53,8 @@ namespace Amf.Documentation.Developpement.API
                 c.IncludeXmlComments(xmlPath);
             });
 
-            services.AddScoped<ValidateModelStateAttribute>().AddScoped<EffacerChampAttribute>();
+            services.AddScoped<IMachineVirtuelleRepository, MachineVirtuelleRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +79,10 @@ namespace Amf.Documentation.Developpement.API
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Amf.Documentation.Developpement.API V1");
             });
+
+            app.UseCors(
+                options => options.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader()
+            );
 
             app.UseMvc();
 

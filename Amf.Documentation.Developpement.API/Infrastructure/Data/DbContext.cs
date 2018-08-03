@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Amf.Documentation.Developpement.API.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace Amf.Documentation.Developpement.API.Entities
+namespace Amf.Documentation.Developpement.API.Infrastructure.Data
 {
     public class DeveloppementContext : DbContext
     {
